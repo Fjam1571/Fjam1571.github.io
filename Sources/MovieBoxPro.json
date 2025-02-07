@@ -6,7 +6,7 @@
       "beta": false,
       "name": "MovieBoxPro",
       "bundleIdentifier": "com.xd.mbp31",
-      "developerName": "MovieBoxPro",
+      "developerName": "MBP Team",
       "subtitle": "MovieboxPro App",
       "version": "v1",
       "versionDate": "2025-02-07T08:39:00+02:00",
@@ -15,7 +15,11 @@
       "localizedDescription": "MovieboxPro App",
       "iconURL": "https://styles.redditmedia.com/t5_29hb17/styles/communityIcon_xmoew2meor5d1.png",
       "tintColor": "9b54fd",
-      "size": 7885887
+      "size": 7885887,
+      "screenshotURLs": [
+        "https://images.chuaxin.com/screenshot/ios/64115ed01f734.jpg",
+        "https://images.chuaxin.com/screenshot/ios/64115ebe829cf.jpg",
+        "https://images.chuaxin.com/screenshot/ios/64115ebc09e0c.jpg"
     }
   ]
 }
