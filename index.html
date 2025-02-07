@@ -21,30 +21,14 @@
                 const latestUpdateHeader = doc.querySelector('h2');
                 const latestUpdateList = latestUpdateHeader.nextElementSibling;
 
-                if (latestUpdateHeader && latestUpdateList && latestUpdateList.tagName === 'UL') {
-                    const dateVersionText = latestUpdateHeader.textContent.trim();
-                    const descriptionItems = Array.from(latestUpdateList.querySelectorAll('li')).map(li => li.textContent.trim());
+                document.getElementById('update-log').innerText = 'Success';
 
-                    const [datePart, versionPart] = dateVersionText.split(' v');
-                    const formattedDate = datePart.replace('.', '-');
-
-                    const updateData = {
-                        date: formattedDate,
-                        version: versionPart,
-                        description: descriptionItems.join('\n')
-                    };
-
-                    document.getElementById('update-log').innerText = `
-                        Date: ${updateData.date}
-                        Version: ${updateData.version}
-                        Description: ${updateData.description}
-                    `;
                 } else {
                     document.getElementById('update-log').innerText = 'Could not find the latest update information.';
                 }
             } catch (error) {
                 console.error('Error fetching the update log:', error);
-                document.getElementById('update-log').innerText = '1An error occurred while fetching the update log.';
+                document.getElementById('update-log').innerText = '5An error occurred while fetching the update log.';
             }
         }
 
