@@ -8,18 +8,14 @@
 
     <script>
         async function fetchLatestUpdate() {
-            try {
+          try {
                 const proxyUrl = 'https://corsproxy.io/?';
                 const targetUrl = 'https://www.movieboxpro.app/ios_update_log';
                 const response = await fetch(proxyUrl + encodeURIComponent(targetUrl));
                 const htmlText = await response.text();
 
                 document.getElementById('update-log').innerText = 'Success';
-
-                } else {
-                    document.getElementById('update-log').innerText = 'Could not find the latest update information.';
-                }
-            } catch (error) {
+            }catch (error) {
                 console.error('Error fetching the update log:', error);
                 document.getElementById('update-log').innerText = '6An error occurred while fetching the update log.';
             }
