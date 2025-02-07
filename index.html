@@ -3,7 +3,7 @@
   <body>
     <h1>Hello World</h1>
     <p>I'm hosted with GitHub Pages.</p>
-    <h1>Fetched Content4</h1>
+    <h1>Fetched Content</h1>
     <div id="content"></div>
     <script>
       // URL of the CORS proxy
@@ -20,10 +20,16 @@
             throw new Error(`HTTP error! Status: ${response.status}`);
           }
           const htmlText = await response.text();
+          
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(htmlText, 'text/html');
+
+          // Assuming the latest update is the first <p> element followed by a <ul>
+          const latestUpdateHeader = doc.querySelector('p');
       
           // Display the fetched HTML content
           const contentDiv = document.getElementById('content');
-          contentDiv.innerHTML = htmlText;
+          contentDiv.innerHTML = latestUpdateHeader;
         } catch (error) {
           console.error('Error fetching or displaying the content:', error);
         }
