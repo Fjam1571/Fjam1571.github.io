@@ -8,16 +8,43 @@
 
     <script>
         async function fetchLatestUpdate() {
-          try {
-                const proxyUrl = 'https://corsproxy.io/?';
+            try {
+                const proxyUrl = 'https://crossorigin.me/';
                 const targetUrl = 'https://www.movieboxpro.app/ios_update_log';
-                const response = await fetch(proxyUrl + encodeURIComponent(targetUrl));
+                const response = await fetch(proxyUrl + targetUrl);
                 const htmlText = await response.text();
 
-                document.getElementById('update-log').innerText = 'Success';
-            }catch (error) {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(htmlText, 'text/html');
+
+                // Assuming the latest update is the first <h2> element followed by a <ul>
+                const latestUpdateHeader = doc.querySelector('h2');
+                const latestUpdateList = latestUpdateHeader ? latestUpdateHeader.nextElementSibling : null;
+
+                if (latestUpdateHeader && latestUpdateList && latestUpdateList.tagName === 'UL') {
+                    const dateVersionText = latestUpdateHeader.textContent.trim();
+                    const descriptionItems = Array.from(latestUpdateList.querySelectorAll('li')).map(li => li.textContent.trim());
+
+                    const [datePart, versionPart] = dateVersionText.split(' v');
+                    const formattedDate = datePart.replace('.', '-');
+
+                    const updateData = {
+                        date: formattedDate,
+                        version: versionPart,
+                        description: descriptionItems.join('\n')
+                    };
+
+                    document.getElementById('update-log').innerText = `
+                        Date: ${updateData.date}
+                        Version: ${updateData.version}
+                        Description: ${updateData.description}
+                    `;
+                } else {
+                    document.getElementById('update-log').innerText = 'Could not find the latest update information.';
+                }
+            } catch (error) {
                 console.error('Error fetching the update log:', error);
-                document.getElementById('update-log').innerText = '6An error occurred while fetching the update log.';
+                document.getElementById('update-log').innerText = 'An error occurred while fetching the update log.';
             }
         }
 
