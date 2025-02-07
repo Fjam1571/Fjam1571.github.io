@@ -3,5 +3,32 @@
   <body>
     <h1>Hello World</h1>
     <p>I'm hosted with GitHub Pages.</p>
+    <script>
+      // URL of the CORS proxy
+      const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+      // Target URL
+      const targetUrl = 'https://www.movieboxpro.app/ios_update_log';
+      
+      // Function to fetch and display the HTML content
+      async function fetchAndDisplayContent() {
+        try {
+          // Fetch the HTML content through the CORS proxy
+          const response = await fetch(proxyUrl + targetUrl);
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          const htmlText = await response.text();
+      
+          // Display the fetched HTML content
+          const contentDiv = document.getElementById('content');
+          contentDiv.innerHTML = htmlText;
+        } catch (error) {
+          console.error('Error fetching or displaying the content:', error);
+        }
+      }
+      
+      // Call the function to fetch and display the content
+      fetchAndDisplayContent();
+    </script>
   </body>
 </html>
