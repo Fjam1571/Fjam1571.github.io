@@ -1,7 +1,52 @@
 <!DOCTYPE html>
 <html>
-<body>
-<h1>Hello World</h1>
-<p>I'm hosted with GitHub Pages.</p>
-</body>
+  <body>
+    <h1>Hello World</h1>
+    <p>I'm hosted with GitHub Pages.</p>
+    <h1>Latest Update</h1>
+    <div id="update-log">Loading...</div>
+
+    <script>
+        async function fetchLatestUpdate() {
+            try {
+                const response = await fetch('https://www.movieboxpro.app/ios_update_log');
+                const htmlText = await response.text();
+
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(htmlText, 'text/html');
+
+                // Assuming the latest update is the first <h2> element followed by a <ul>
+                const latestUpdateHeader = doc.querySelector('h2');
+                const latestUpdateList = latestUpdateHeader.nextElementSibling;
+
+                if (latestUpdateHeader && latestUpdateList && latestUpdateList.tagName === 'UL') {
+                    const dateVersionText = latestUpdateHeader.textContent.trim();
+                    const descriptionItems = Array.from(latestUpdateList.querySelectorAll('li')).map(li => li.textContent.trim());
+
+                    const [datePart, versionPart] = dateVersionText.split(' v');
+                    const formattedDate = datePart.replace('.', '-');
+
+                    const updateData = {
+                        date: formattedDate,
+                        version: versionPart,
+                        description: descriptionItems.join('\n')
+                    };
+
+                    document.getElementById('update-log').innerText = `
+                        Date: ${updateData.date}
+                        Version: ${updateData.version}
+                        Description: ${updateData.description}
+                    `;
+                } else {
+                    document.getElementById('update-log').innerText = 'Could not find the latest update information.';
+                }
+            } catch (error) {
+                console.error('Error fetching the update log:', error);
+                document.getElementById('update-log').innerText = 'An error occurred while fetching the update log.';
+            }
+        }
+
+        fetchLatestUpdate();
+    </script>
+  </body>
 </html>
