@@ -39,10 +39,18 @@
             } else {
               console.error('No <p> element found within the .info div.');
             }
+            
+            //Select Descriptions
             const firstDecription = infoDiv.querySelector('ul');
             const DecriptionLines = firstDecription.querySelectorAll('*');
             if (firstDecription) {
-              const updateTextDesc = DecriptionLines.textContent.trim();
+              
+              // Store each subtag's HTML in a constant string, with each on a new line
+              const subTagsString = Array.from(DecriptionLines)
+                .map(subTag => subTag.outerHTML)
+                .join('\n');
+              
+              const updateTextDesc = subTagsString.textContent.trim();
       
               // Display the fetched HTML content
               const contentDiv = document.getElementById('Description');
@@ -51,6 +59,7 @@
             } else {
               console.error('No <ul> element found within the .info div.');
             }
+            
           } else {
             console.error('No <div> with class "info" found.');
           }
