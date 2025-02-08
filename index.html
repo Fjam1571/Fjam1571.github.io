@@ -49,12 +49,10 @@
               const subTagsString = Array.from(DecriptionLines)
                 .map(subTag => subTag.outerHTML)
                 .join('\n');
-              
-              const updateTextDesc = subTagsString.textContent.trim();
       
               // Display the fetched HTML content
               const contentDiv = document.getElementById('Description');
-              contentDiv.innerHTML = updateTextDesc;
+              contentDiv.innerHTML = subTagsString;
               
             } else {
               console.error('No <ul> element found within the .info div.');
