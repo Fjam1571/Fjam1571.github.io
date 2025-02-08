@@ -40,8 +40,9 @@
               console.error('No <p> element found within the .info div.');
             }
             const firstDecription = infoDiv.querySelector('ul');
+            const DecriptionLines = firstDecription.querySelectorAll('*');
             if (firstDecription) {
-              const updateTextDesc = firstDecription.textContent.trim();
+              const updateTextDesc = DecriptionLines.textContent.trim();
       
               // Display the fetched HTML content
               const contentDiv = document.getElementById('Description');
