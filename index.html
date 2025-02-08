@@ -4,7 +4,8 @@
     <h1>Hello World</h1>
     <p>I'm hosted with GitHub Pages.</p>
     <h1>Fetched Content8</h1>
-    <div id="content"></div>
+    <div id="Version"></div>
+    <div id="Description"></div>
     <script>
       // URL of the CORS proxy
       const proxyUrl = 'https://corsproxy.io/';
@@ -32,11 +33,22 @@
               const updateText = firstParagraph.textContent.trim();
       
               // Display the fetched HTML content
-              const contentDiv = document.getElementById('content');
+              const contentDiv = document.getElementById('Version');
               contentDiv.innerHTML = updateText;
               
             } else {
               console.error('No <p> element found within the .info div.');
+            }
+            const firstDecription = infoDiv.querySelector('ul');
+            if (firstDecription) {
+              const updateTextDesc = firstDecription.textContent.trim();
+      
+              // Display the fetched HTML content
+              const contentDiv = document.getElementById('Description');
+              contentDiv.innerHTML = updateTextDesc;
+              
+            } else {
+              console.error('No <ul> element found within the .info div.');
             }
           } else {
             console.error('No <div> with class "info" found.');
