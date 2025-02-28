@@ -28,7 +28,7 @@ jobs:
 
       - name: Commit changes if updated
         env:
-          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_ACTOR: Fjam1571
           PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
         run: |
           git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
