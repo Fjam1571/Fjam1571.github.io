@@ -1,72 +1,10 @@
 <!DOCTYPE html>
 <html>
   <body>
-    <h1>Latest MovieBox Pro IPA</h1>
+    <h1>Latest MovieBox Pro IPA10</h1>
     <div id="Version"></div>
     <div id="Description"></div>
     <script>
-      // URL of the CORS proxy
-      const proxyUrl = 'https://corsproxy.io/';
-      // Target URL
-      const targetUrl = 'https://www.movieboxpro.app/ios_update_log';
-      
-      // Function to fetch and display the HTML content
-      async function fetchAndDisplayContent() {
-        try {
-          // Fetch the HTML content through the CORS proxy
-          const response = await fetch(proxyUrl + targetUrl);
-          if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-          }
-          const htmlText = await response.text();
-          
-          const parser = new DOMParser();
-          const doc = parser.parseFromString(htmlText, 'text/html');
-
-          // Select the first <p> element within the <div> with class 'info'
-          const infoDiv = doc.querySelector('div.info');
-          if (infoDiv) {
-            const firstParagraph = infoDiv.querySelector('p');
-            if (firstParagraph) {
-              const updateText = firstParagraph.textContent.trim();
-      
-              // Display the fetched HTML content
-              const contentDiv = document.getElementById('Version');
-              contentDiv.innerHTML = updateText;
-              
-            } else {
-              console.error('No <p> element found within the .info div.');
-            }
-            
-            //Select Descriptions
-            const firstDecription = infoDiv.querySelector('ul');
-            const DecriptionLines = firstDecription.querySelectorAll('li');
-            if (firstDecription) {
-              
-              // Store each subtag's HTML in a constant string, with each on a new line
-              const subTagsString = Array.from(DecriptionLines)
-                .map(subTag => subTag.outerHTML)
-                .join('\n');
-      
-              // Display the fetched HTML content
-              const contentDiv = document.getElementById('Description');
-              contentDiv.innerHTML = subTagsString;
-              
-            } else {
-              console.error('No <ul> element found within the .info div.');
-            }
-            
-          } else {
-            console.error('No <div> with class "info" found.');
-          }
-      
-        } catch (error) {
-          console.error('Error fetching or displaying the content:', error);
-        }
-      }
-      
-      // Call the function to fetch and display the content
-      fetchAndDisplayContent();
       const fetch = require('node-fetch');
 
       (async () => {
