@@ -28,17 +28,16 @@ jobs:
 
       - name: Commit changes if updated
         env:
-          GITHUB_ACTOR: ${GITHUB_ACTOR}
           PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
         run: |
-          git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
-          git config --global user.name "${GITHUB_ACTOR}"
-          # Use the personal access token for authentication
-          git remote set-url origin https://${GITHUB_ACTOR}:${PAT_TOKEN}@github.com/${{ github.repository }}.git
+          git config --global user.email "Fjam1571@users.noreply.github.com"
+          git config --global user.name "Fjam1571"
+          # Set remote URL explicitly with your username and PAT
+          git remote set-url origin https://Fjam1571:${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }}.git
           if [ -n "$(git status --porcelain Sources/MovieBoxPro.json)" ]; then
             git add Sources/MovieBoxPro.json
             git commit -m "Update MovieBoxPro metadata $(date -u)"
-            git push
+            git push origin HEAD:${{ github.ref }}
           else
             echo "No changes detected."
           fi
