@@ -2,7 +2,7 @@
 <html>
   <body>
     <h1>Latest MovieBox Pro IPA</h1>
-    <div id="Version"></div>
+    <div id="Version10"></div>
     <div id="Description"></div>
     <script>
       // URL of the CORS proxy
@@ -67,6 +67,33 @@
       
       // Call the function to fetch and display the content
       fetchAndDisplayContent();
+      const fetch = require('node-fetch');
+
+      (async () => {
+        try {
+          const response = await fetch('https://www.movieboxpro.app/ipa', { method: 'HEAD' });
+          const contentLength = response.headers.get('content-length');
+          const contentDisposition = response.headers.get('content-disposition');
+      
+          console.log('Content-Length:', contentLength);
+          console.log('Content-Disposition:', contentDisposition);
+      
+          let version = 'unknown';
+          if (contentDisposition) {
+            // Use a regex to extract version info, assuming filename like MovieBoxPro_v9.6.ipa
+            const match = contentDisposition.match(/filename="[^_]+_([^\.]+)\.ipa"/);
+            if (match && match[1]) {
+              version = match[1];
+            }
+          }
+          console.log('Version:', version);
+        } catch (error) {
+          console.error('Error fetching headers:', error);
+          process.exit(1);
+        }
+      })();
+
+      
     </script>
   </body>
 </html>
