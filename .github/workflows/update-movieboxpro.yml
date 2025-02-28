@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          persist-credentials: false  # This prevents using the default GITHUB_TOKEN for push
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -30,14 +32,15 @@ jobs:
         env:
           PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
         run: |
+          # Set your Git config with your username
           git config --global user.email "Fjam1571@users.noreply.github.com"
           git config --global user.name "Fjam1571"
-          # Set remote URL explicitly with your username and PAT
+          # Update the remote URL to use your PAT instead of the default token
           git remote set-url origin https://Fjam1571:${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }}.git
           if [ -n "$(git status --porcelain Sources/MovieBoxPro.json)" ]; then
             git add Sources/MovieBoxPro.json
             git commit -m "Update MovieBoxPro metadata $(date -u)"
-            git push origin HEAD:${{ github.ref }}
+            git push
           else
             echo "No changes detected."
           fi
