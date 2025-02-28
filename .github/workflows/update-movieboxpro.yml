@@ -1,0 +1,39 @@
+name: Update MovieBoxPro Metadata
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Runs every day at midnight UTC
+  workflow_dispatch:
+
+jobs:
+  update-metadata:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests
+
+      - name: Run update script
+        run: python update_movieboxpro.py
+
+      - name: Commit changes if updated
+        run: |
+          git config --global user.email "action@github.com"
+          git config --global user.name "GitHub Action"
+          if [ -n "$(git status --porcelain Sources/MovieBoxPro.json)" ]; then
+            git add Sources/MovieBoxPro.json
+            git commit -m "Update MovieBoxPro metadata $(date -u)"
+            git push
+          else
+            echo "No changes detected."
+          fi
