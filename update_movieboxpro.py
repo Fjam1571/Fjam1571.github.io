@@ -105,6 +105,7 @@ else:
 if current_version != plist_app_version:
 
     app["version"] = plist_app_version
+    app["downloadURL"] = final_url
     # Update the app's bundleIdentifier if one was extracted from the IPA's Info.plist
     if bundle_identifier:
         app["bundleIdentifier"] = bundle_identifier
