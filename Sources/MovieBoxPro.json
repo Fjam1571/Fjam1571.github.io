@@ -8,18 +8,47 @@
       "bundleIdentifier": "com.xd.mbp31",
       "developerName": "MBP Team",
       "subtitle": "MovieboxPro App",
-      "version": "14.4",
-      "versionDate": "2025-02-07T03:25:29+00:00Z",
-      "versionDescription": "Updated to 14.4 on 2025-02-07T03:25:29+00:00Z",
-      "downloadURL": "https://www.movieboxpro.app/ipa",
-      "localizedDescription": "The best Movie & TVShow App(iOS,Mac,Android,TV,Win,Web)",
+      "localizedDescription": "The best Movie & TV Show App(iOS,Mac,Android,TV,Win,Web)",
       "iconURL": "https://styles.redditmedia.com/t5_29hb17/styles/communityIcon_xmoew2meor5d1.png",
       "tintColor": "9b54fd",
-      "size": 48346377,
       "screenshotURLs": [
         "https://images.chuaxin.com/screenshot/ios/64115ed01f734.jpg",
         "https://images.chuaxin.com/screenshot/ios/64115ebe829cf.jpg",
         "https://images.chuaxin.com/screenshot/ios/64115ebc09e0c.jpg"
+      ],
+      "versions": [
+        {
+          "version": "14.3",
+          "date": "2025-01-17T10:21:42+00:00Z",
+          "downloadURL": "https://images.chuaxin.com/app/ios_ipa/MovieBoxPro_14.3.ipa",
+          "localizedDescription": "Updated to 14.3 on 2025-01-17T10:21:42+00:00Z",
+          "size": 48337682,
+          "minOSVersion": "13.0"
+        },
+        {
+          "version": "14.2",
+          "date": "2025-01-02T05:56:51+00:00Z",
+          "downloadURL": "https://images.chuaxin.com/app/ios_ipa/MovieBoxPro_14.2.ipa",
+          "localizedDescription": "Updated to 14.2 on 2025-01-02T05:56:51+00:00Z",
+          "size": 48326428,
+          "minOSVersion": "13.0"
+        },
+        {
+          "version": "14.1",
+          "date": "2024-11-21T01:30:03+00:00Z",
+          "downloadURL": "https://images.chuaxin.com/app/ios_ipa/MovieBoxPro_14.1.ipa",
+          "localizedDescription": "Updated to 14.1 on 2024-11-21T01:30:03+00:00Z",
+          "size": 48226297,
+          "minOSVersion": "13.0"
+        },
+        {
+          "version": "14.0",
+          "date": "2024-09-20T06:57:11+00:00Z",
+          "downloadURL": "https://images.chuaxin.com/app/ios_ipa/MovieBoxPro_14.0.ipa",
+          "localizedDescription": "Updated to 14.0 on 2024-09-20T06:57:11+00:00Z",
+          "size": 48224473,
+          "minOSVersion": "13.0"
+        }
       ]
     }
   ]
