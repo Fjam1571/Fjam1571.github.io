@@ -19,6 +19,7 @@
       "versions": [
         {
           "version": "14.3",
+          "buildVersion": "1",
           "date": "2025-01-17T10:21:42+00:00Z",
           "downloadURL": "https://images.chuaxin.com/app/ios_ipa/MovieBoxPro_14.3.ipa",
           "localizedDescription": "Updated to 14.3 on 2025-01-17T10:21:42+00:00Z",
@@ -27,6 +28,7 @@
         },
         {
           "version": "14.2",
+          "buildVersion": "1",
           "date": "2025-01-02T05:56:51+00:00Z",
           "downloadURL": "https://images.chuaxin.com/app/ios_ipa/MovieBoxPro_14.2.ipa",
           "localizedDescription": "Updated to 14.2 on 2025-01-02T05:56:51+00:00Z",
@@ -35,6 +37,7 @@
         },
         {
           "version": "14.1",
+          "buildVersion": "1",
           "date": "2024-11-21T01:30:03+00:00Z",
           "downloadURL": "https://images.chuaxin.com/app/ios_ipa/MovieBoxPro_14.1.ipa",
           "localizedDescription": "Updated to 14.1 on 2024-11-21T01:30:03+00:00Z",
@@ -43,6 +46,7 @@
         },
         {
           "version": "14.0",
+          "buildVersion": "1",
           "date": "2024-09-20T06:57:11+00:00Z",
           "downloadURL": "https://images.chuaxin.com/app/ios_ipa/MovieBoxPro_14.0.ipa",
           "localizedDescription": "Updated to 14.0 on 2024-09-20T06:57:11+00:00Z",
