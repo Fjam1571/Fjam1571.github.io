@@ -6,7 +6,7 @@
       "beta": false,
       "name": "MovieBoxPro",
       "bundleIdentifier": "com.xd.mbp31",
-      "version": "14.3",
+      "version": "14.4",
       "developerName": "MBP Team",
       "subtitle": "MovieboxPro App",
       "localizedDescription": "The best Movie & TV Show App(iOS,Mac,Android,TV,Win,Web)",
@@ -19,6 +19,14 @@
         "https://images.chuaxin.com/screenshot/ios/64115ebc09e0c.jpg"
       ],
       "versions": [
+        {
+          "version": "14.4",
+          "date": "2025-02-07T03:25:29+00:00Z",
+          "downloadURL": "https://images.chuaxin.com/app/ios_ipa/MovieBoxPro_14.4.ipa",
+          "localizedDescription": "Updated to 14.4 on 2025-02-07T03:25:29+00:00Z",
+          "size": 48346377,
+          "minOSVersion": "13.0"
+        },
         {
           "version": "14.3",
           "buildVersion": "1",
