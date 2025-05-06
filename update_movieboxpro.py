@@ -8,37 +8,54 @@ from io import BytesIO
 import plistlib
 import zipfile
 
+# ——— Global headers to mimic a real browser ———
+HEADERS = {
+    "User-Agent": (
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+        "AppleWebKit/537.36 (KHTML, like Gecko) "
+        "Chrome/114.0.0.0 Safari/537.36"
+    )
+}
+
 def fetch_ipa_metadata(url, default_min_os="13.0"):
     """
-    Returns a tuple (file_size, min_os_version, plist_version, bundle_id)
-    by:
-      1) issuing a byte-range GET for bytes=0-0 to parse Content-Range → total size
-      2) downloading the IPA fully into memory
-      3) locating exactly Payload/<App>.app/Info.plist
-      4) extracting MinimumOSVersion, CFBundleShortVersionString, CFBundleIdentifier
+    Returns (file_size, min_os_version, plist_version, bundle_id),
+    using HEADERS on both range and full GET, with HEAD fallback for size.
     """
-    # 1) Get file size via byte-range GET
-    r = requests.get(url, headers={"Range": "bytes=0-0"}, allow_redirects=True)
+    # 1) Try byte-range GET for size
+    r = requests.get(url, headers=HEADERS, allow_redirects=True, stream=True)
+    if r.status_code == 403:
+        print(f"ERROR: 403 Forbidden fetching byte range for {url}")
+        return None, None, None, None
+
     content_range = r.headers.get("Content-Range", "")
     m = re.match(r"bytes \d+-\d+/(\d+)", content_range)
-    file_size = int(m.group(1)) if m else None
+    if m:
+        file_size = int(m.group(1))
+    else:
+        # fallback to HEAD for Content-Length
+        h = requests.head(url, headers=HEADERS, allow_redirects=True)
+        cl = h.headers.get("Content-Length")
+        file_size = int(cl) if cl and cl.isdigit() else None
 
     # 2) Download full IPA
-    ipa_resp = requests.get(url)
+    ipa_resp = requests.get(url, headers=HEADERS, allow_redirects=True)
+    if ipa_resp.status_code == 403:
+        print(f"ERROR: 403 Forbidden downloading IPA at {url}")
+        return file_size, None, None, None
     ipa_resp.raise_for_status()
     ipa_bytes = BytesIO(ipa_resp.content)
 
-    # Defaults
+    # 3) Parse Info.plist
     min_os    = default_min_os
     plist_ver = None
     bundle_id = None
 
-    # 3) Open ZIP and find the canonical Info.plist
     with zipfile.ZipFile(ipa_bytes) as zf:
         for path in zf.namelist():
             if re.match(r"^Payload/[^/]+\.app/Info\.plist$", path):
-                plist_data = zf.read(path)
-                info = plistlib.loads(plist_data)
+                data = zf.read(path)
+                info = plistlib.loads(data)
                 min_os    = info.get("MinimumOSVersion", default_min_os)
                 plist_ver = info.get("CFBundleShortVersionString")
                 bundle_id = info.get("CFBundleIdentifier")
@@ -46,65 +63,66 @@ def fetch_ipa_metadata(url, default_min_os="13.0"):
 
     return file_size, min_os, plist_ver, bundle_id
 
-
-# — Step 1: Resolve the real download URL by following redirects
+# ——— Step 1: Resolve final URL with error handling ———
 initial_url = "http://movieboxpro.app/ipa"
-resp = requests.get(initial_url, allow_redirects=True)
-resp.raise_for_status()
-final_url = resp.url
-print("Final URL:", final_url)
+try:
+    resp = requests.get(initial_url, headers=HEADERS,
+                        allow_redirects=True, timeout=10)
+    resp.raise_for_status()
+    final_url = resp.url
+    print("Final URL:", final_url)
+except requests.exceptions.HTTPError as e:
+    print(f"Failed to resolve final URL ({initial_url}): {e}")
+    exit(1)
 
-# — Step 2: Fetch Last-Modified header for version_date fallback
-head = requests.head(final_url, allow_redirects=True)
-lm = head.headers.get("Last-Modified")
-if lm:
-    try:
+# ——— Step 2: Last-Modified → version_date ———
+try:
+    head = requests.head(final_url, headers=HEADERS,
+                         allow_redirects=True, timeout=5)
+    lm = head.headers.get("Last-Modified")
+    if lm:
         lm_dt = parsedate_to_datetime(lm)
         version_date = lm_dt.isoformat() + "Z"
-    except Exception:
-        version_date = datetime.utcnow().isoformat() + "Z"
-else:
+    else:
+        raise KeyError
+except Exception:
     version_date = datetime.utcnow().isoformat() + "Z"
 print("Version Date:", version_date)
 
-# — Step 3: Attempt to extract version & bundle-id from the IPA
-file_size, min_os_version, plist_app_version, bundle_identifier = fetch_ipa_metadata(
-    final_url,
-    default_min_os="13.0"
-)
+# ——— Step 3 & 3.5: Fetch IPA metadata (size, plist version & bundle ID) ———
+file_size, min_os_version, plist_app_version, bundle_identifier = \
+    fetch_ipa_metadata(final_url, default_min_os="13.0")
 
-print("File Size:", file_size, "bytes")
-print("Minimum OS Version:", min_os_version)
-print("Info.plist Version:", plist_app_version)
+print("File Size:", file_size)
+print("Min OS Version:", min_os_version)
+print("Plist Version:", plist_app_version)
 print("Bundle Identifier:", bundle_identifier)
 
-# — Step 4: Fallback to filename-based version ONLY if plist had none
+# ——— Step 4: Fallback filename version only if plist gave none ———
 if not plist_app_version:
     fname = os.path.basename(final_url)
     fm = re.search(r'_(\d+(?:\.\d+)+)\.ipa$', fname)
-    plist_app_version = fm.group(1) if fm else None
-    if plist_app_version:
-        print("Falling back to filename version:", plist_app_version)
+    if fm:
+        plist_app_version = fm.group(1)
+        print("Filename fallback version:", plist_app_version)
     else:
-        print("No version found in filename either—plist and filename both empty.")
+        print("No version found in filename either.")
 
-# — Step 5: Load & update JSON if needed
+# ——— Step 5: Load and update JSON ———
 json_file = "Sources/MovieBoxPro.json"
 try:
     with open(json_file, "r") as f:
         data = json.load(f)
 except FileNotFoundError:
-    print(f"{json_file} not found. Exiting.")
+    print(f"{json_file} not found; aborting.")
     exit(1)
 
 app = data["apps"][0]
-versions = app.get("versions", [])
-current_version = versions[0]["version"] if versions else None
+current_version = app.get("versions", [{}])[0].get("version")
 print("Current JSON version:", current_version)
 
 if current_version != plist_app_version:
-    print("Version change detected. Updating JSON…")
-
+    print("Updating to version", plist_app_version)
     app["version"]     = plist_app_version
     app["downloadURL"] = final_url
     if bundle_identifier:
@@ -125,4 +143,4 @@ if current_version != plist_app_version:
         json.dump(data, f, indent=2)
     print("JSON file updated.")
 else:
-    print("No update needed; version matches.")
+    print("No update needed; versions match.")
