@@ -6,19 +6,27 @@
       "beta": false,
       "name": "MovieBoxPro",
       "bundleIdentifier": "com.xd.mbp31",
-      "version": "14.5",
+      "version": "14.6",
       "developerName": "MBP Team",
       "subtitle": "MovieboxPro App",
       "localizedDescription": "The best Movie & TV Show App(iOS,Mac,Android,TV,Win,Web)",
       "iconURL": "https://styles.redditmedia.com/t5_29hb17/styles/communityIcon_xmoew2meor5d1.png",
       "tintColor": "9b54fd",
-      "downloadURL": "https://images.chuaxin.com/app/ios_ipa/MovieBoxPro_14.5.ipa",
+      "downloadURL": "https://images.chuaxin.com/app/ios_ipa/MovieBoxPro_14.6.ipa",
       "screenshotURLs": [
         "https://images.chuaxin.com/screenshot/ios/64115ed01f734.jpg",
         "https://images.chuaxin.com/screenshot/ios/64115ebe829cf.jpg",
         "https://images.chuaxin.com/screenshot/ios/64115ebc09e0c.jpg"
       ],
       "versions": [
+        {
+          "version": "14.6",
+          "date": "2025-09-19T02:22:08+00:00Z",
+          "downloadURL": "https://images.chuaxin.com/app/ios_ipa/MovieBoxPro_14.6.ipa",
+          "localizedDescription": "Updated to 14.6 on 2025-09-19T02:22:08+00:00Z",
+          "size": 49081061,
+          "minOSVersion": "13.0"
+        },
         {
           "version": "14.5",
           "date": "2025-03-07T05:47:01+00:00Z",
